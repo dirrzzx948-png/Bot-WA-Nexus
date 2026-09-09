@@ -56,7 +56,7 @@ Sebelum menjalankan bot, pastikan perangkat telah memiliki:
 - npm
 - Git
 - Koneksi internet aktif
-- Nomor WhatsApp khusus untuk bot
+- Nomor WhatsApp khusus untuk bot atau nomor biasa
 
 Repository menggunakan Node.js dan package manager npm. Dependensi utama yang digunakan antara lain Baileys, Axios, Express, JSDOM, node-fetch, dan Pino.
 
