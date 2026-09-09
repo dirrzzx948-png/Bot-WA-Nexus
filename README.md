@@ -1,243 +1,244 @@
-NEXUS BOT
+<div align="center">NEXUS BOT
 
-WhatsApp Bot berbasis Node.js dan Baileys dengan berbagai fitur untuk stiker, pengunduhan media, manajemen grup, serta utilitas sistem.
+WhatsApp Bot berbasis Node.js & Baileys
 
-NEXUS BOT dirancang agar dapat dijalankan pada Android melalui Termux maupun pada Windows menggunakan Node.js. Proses autentikasi menggunakan WhatsApp Pairing Code sehingga tidak membutuhkan pemindaian QR secara manual.
+Bot WhatsApp dengan fitur sticker maker, media downloader, group management, dan system utilities.
 
-Fitur
 
-1. Sticker Tools
 
-Perintah| Fungsi
-"!s"| Mengonversi gambar menjadi stiker WhatsApp. Dapat digunakan melalui caption atau dengan membalas pesan gambar.
-"!ts <teks>"| Membuat stiker berbasis teks secara otomatis.
-"!toimg"| Mengonversi stiker WhatsApp menjadi gambar JPG/PNG.
+</div><br>Tentang
 
-2. Media Downloader
+NEXUS BOT adalah WhatsApp Bot berbasis Node.js dan Baileys yang dirancang untuk berjalan pada Android maupun Windows.
 
-Perintah| Fungsi
-"!tt <url>"| Mengunduh video TikTok berdasarkan tautan yang diberikan.
-"!yt <url>"| Mengunduh video YouTube dengan kualitas standar hingga 360p.
-"!yt720 <url>"| Mengunduh video YouTube hingga kualitas 720p HD.
-"!yt1080 <url>"| Mengunduh video YouTube hingga kualitas 1080p Full HD.
-"!ytmp3 <url>"| Mengunduh dan mengekstrak audio dari video YouTube.
-"!spotify <url>"| Mengunduh audio berdasarkan URL track Spotify.
+Bot menggunakan WhatsApp Pairing Code untuk proses autentikasi, sehingga pengguna tidak perlu melakukan pemindaian QR secara manual.
 
-Ketersediaan dan keberhasilan pengunduhan dapat bergantung pada sumber media, perubahan platform, koneksi internet, serta layanan yang digunakan oleh bot.
+Platform yang didukung:
 
-3. Group Management
-
-Perintah| Fungsi
-"!groupinfo"| Menampilkan informasi dan statistik grup WhatsApp.
-"!admins"| Menampilkan daftar anggota yang memiliki hak akses admin.
-"!tagall"| Menyebutkan seluruh anggota grup dalam satu pesan.
-"!hidetag <pesan>"| Mengirim pengumuman dengan melakukan mention anggota tanpa menampilkan daftar mention pada teks pesan.
-"!kick"| Mengeluarkan anggota dari grup dengan membalas pesan target.
-"!add <nomor>"| Menambahkan nomor ke grup menggunakan format nomor internasional.
-
-Perintah manajemen grup membutuhkan bot memiliki izin admin apabila tindakan tersebut memerlukan hak administrator WhatsApp.
-
-4. System & Utilities
-
-Perintah| Fungsi
-"!menu"| Menampilkan daftar perintah yang tersedia.
-"!help"| Menampilkan panduan penggunaan perintah dan modul bot.
-"!ping"| Mengukur waktu respons bot.
-"!runtime"| Menampilkan durasi bot sejak pertama kali dijalankan.
-"!owner"| Menampilkan informasi pemilik atau pengelola bot.
+- Android — Termux
+- Windows — Node.js
 
 ---
 
-Persyaratan
+Fitur
 
-Sebelum menjalankan bot, pastikan perangkat telah memiliki:
+Sticker
+
+Command| Keterangan
+"!s"| Mengubah gambar menjadi stiker
+"!ts <teks>"| Membuat stiker dari teks
+"!toimg"| Mengubah stiker menjadi gambar
+
+Media Downloader
+
+Command| Keterangan
+"!tt <url>"| Download video TikTok
+"!yt <url>"| Download YouTube hingga 360p
+"!yt720 <url>"| Download YouTube hingga 720p
+"!yt1080 <url>"| Download YouTube hingga 1080p
+"!ytmp3 <url>"| Download audio YouTube
+"!spotify <url>"| Download audio dari URL Spotify
+
+«Ketersediaan download bergantung pada sumber media, perubahan platform, koneksi internet, dan layanan pihak ketiga.»
+
+Group Management
+
+Command| Keterangan
+"!groupinfo"| Menampilkan informasi grup
+"!admins"| Menampilkan daftar admin
+"!tagall"| Mention seluruh anggota
+"!hidetag <pesan>"| Mention seluruh anggota tanpa menampilkan daftar mention
+"!kick"| Mengeluarkan anggota dari grup
+"!add <nomor>"| Menambahkan anggota menggunakan nomor internasional
+
+«Command yang membutuhkan hak administrator hanya dapat digunakan apabila bot memiliki izin admin.»
+
+Utilities
+
+Command| Keterangan
+"!menu"| Menampilkan menu command
+"!help"| Menampilkan bantuan
+"!ping"| Mengecek response time bot
+"!runtime"| Menampilkan uptime bot
+"!owner"| Menampilkan informasi owner
+
+---
+
+Requirements
+
+Pastikan perangkat sudah memiliki:
 
 - Node.js
 - npm
 - Git
-- Koneksi internet aktif
-- Nomor WhatsApp khusus untuk bot atau nomor biasa
+- Koneksi internet
+- Nomor WhatsApp khusus untuk bot
 
-Repository menggunakan Node.js dan package manager npm. Dependensi utama yang digunakan antara lain Baileys, Axios, Express, JSDOM, node-fetch, dan Pino.
+Dependencies
+
+Baileys
+Axios
+Express
+JSDOM
+node-fetch
+Pino
 
 ---
 
-Instalasi di Android
+Installation
 
-Untuk Android, bot dapat dijalankan menggunakan Termux.
+Android — Termux
 
-1. Instal Termux
+1. Update package
 
-Gunakan Termux dari sumber resmi yang terpercaya dan buka aplikasinya.
-
-Kemudian perbarui paket:
+Buka Termux lalu jalankan:
 
 pkg update && pkg upgrade
 
-2. Instal Git dan Node.js
+2. Install Git & Node.js
 
 pkg install git nodejs
 
-Periksa instalasi:
+Cek instalasi:
 
 node -v
 npm -v
 git --version
 
-Jika ketiga perintah tersebut menampilkan versi, berarti persyaratan dasar sudah tersedia.
-
-3. Clone Repository
-
-Clone repository NEXUS BOT:
+3. Clone repository
 
 git clone https://github.com/dirrzzx948-png/Bot-WA-Nexus.git
 
-Masuk ke folder:
+Masuk ke folder project:
 
 cd Bot-WA-Nexus
 
-4. Instal Dependensi
-
-Jalankan:
+4. Install dependencies
 
 npm install
 
-Tunggu sampai seluruh dependensi selesai dipasang.
-
-5. Jalankan Bot
+5. Jalankan bot
 
 npm start
 
-Repository menyediakan script "start" yang menjalankan "node index.js".
+Jika berhasil, bot akan menjalankan:
+
+node index.js
 
 ---
 
-Login WhatsApp di Android
+Windows
 
-Saat bot dijalankan untuk pertama kali dan belum memiliki sesi WhatsApp, bot akan meminta nomor WhatsApp melalui terminal.
+1. Install Node.js
 
-Masukkan nomor dalam format internasional.
+Install Node.js pada komputer Windows.
 
-Contoh:
-
-628123456789
-
-Jangan menggunakan format:
-
-08123456789
-
-Bot kemudian akan menampilkan Pairing Code.
-
-Buka WhatsApp pada perangkat yang akan digunakan sebagai akun bot, kemudian masuk ke menu perangkat tertaut dan gunakan opsi untuk menautkan perangkat menggunakan kode.
-
-Setelah proses berhasil, sesi akan disimpan di folder:
-
-session/
-
-Pada repository, autentikasi menggunakan "useMultiFileAuthState('./session')", sehingga kredensial sesi disimpan secara lokal.
-
-Jangan membagikan folder "session" kepada orang lain karena berisi data autentikasi akun WhatsApp.
-
----
-
-Instalasi di Windows
-
-1. Instal Node.js
-
-Instal Node.js pada komputer Windows.
-
-Setelah selesai, buka:
+Kemudian buka:
 
 - Command Prompt
 - PowerShell
 - Windows Terminal
 
-Kemudian periksa:
+Cek instalasi:
 
 node -v
 npm -v
 
-2. Instal Git
-
-Pastikan Git sudah tersedia:
+2. Install Git
 
 git --version
 
-3. Clone Repository
-
-Jalankan:
+3. Clone repository
 
 git clone https://github.com/dirrzzx948-png/Bot-WA-Nexus.git
 
-Masuk ke folder:
+Masuk ke folder project:
 
 cd Bot-WA-Nexus
 
-4. Instal Dependensi
+4. Install dependencies
 
 npm install
 
-5. Jalankan Bot
+5. Jalankan bot
 
 npm start
-
-Jika berhasil, bot akan mulai melakukan koneksi ke WhatsApp.
 
 ---
 
-Cara Menjalankan Kembali
+WhatsApp Pairing
 
-Setelah sesi WhatsApp berhasil dibuat, bot dapat dijalankan kembali tanpa melakukan pairing ulang selama sesi masih valid.
+Saat bot pertama kali dijalankan dan belum memiliki session, terminal akan meminta nomor WhatsApp.
 
-Android:
+Gunakan format nomor internasional:
 
-cd Bot-WA-Nexus
-npm start
+628123456789
 
-Windows:
+Jangan menggunakan:
 
-cd Bot-WA-Nexus
-npm start
+08123456789
 
-Pastikan folder "session" tidak dihapus.
+Setelah nomor dimasukkan, bot akan menampilkan Pairing Code.
+
+Pada WhatsApp:
+
+WhatsApp
+→ Perangkat Tertaut
+→ Tautkan Perangkat
+→ Tautkan dengan nomor telepon / kode
+
+Masukkan Pairing Code yang ditampilkan pada terminal.
+
+Setelah berhasil, session akan tersimpan di:
+
+session/
+
+NEXUS BOT menggunakan:
+
+useMultiFileAuthState('./session')
+
+Penting
+
+Jangan membagikan folder "session/".
+
+Folder tersebut berisi data autentikasi WhatsApp. Jangan mengunggahnya ke repository publik atau memberikannya kepada orang lain.
 
 ---
 
-Cara Menggunakan Bot
+Usage
 
-Setelah bot terhubung ke WhatsApp, kirim perintah melalui chat WhatsApp.
+Setelah bot berhasil terhubung, command dapat digunakan melalui chat WhatsApp.
 
-Stiker
+Sticker
 
-Membuat stiker dari gambar
+Image → Sticker
 
 Kirim gambar dengan caption:
 
 !s
 
-Atau balas/reply gambar menggunakan:
+Atau reply gambar:
 
 !s
 
-Membuat stiker teks
+Text → Sticker
 
 !ts Halo dunia
 
-Mengubah stiker menjadi gambar
+Sticker → Image
 
-Balas/reply sebuah stiker:
+Reply sebuah sticker:
 
 !toimg
 
 ---
 
-Download Media
+Media Downloader
 
 TikTok
 
 !tt https://contoh-url-tiktok
 
-YouTube 360p
+YouTube
 
 !yt https://youtube.com/watch?v=xxxx
 
@@ -257,158 +258,108 @@ Spotify
 
 !spotify https://open.spotify.com/track/xxxx
 
-Gunakan fitur pengunduhan hanya untuk konten yang memang boleh Anda unduh dan gunakan. Jangan gunakan bot untuk melanggar hak cipta atau ketentuan layanan platform.
+«Gunakan fitur download hanya untuk konten yang memang boleh Anda unduh dan gunakan. Jangan gunakan bot untuk melanggar hak cipta atau ketentuan layanan platform.»
 
 ---
 
-Manajemen Grup
+Group Management
 
-Perintah berikut digunakan di dalam grup WhatsApp.
+Command berikut digunakan di dalam grup WhatsApp.
 
-Informasi Grup
+Group Information
 
 !groupinfo
 
-Menampilkan informasi dasar dan statistik grup.
-
-Daftar Admin
+Admin List
 
 !admins
 
-Menampilkan anggota yang memiliki status admin.
-
-Mention Semua Anggota
+Mention All
 
 !tagall
 
-Menyebutkan seluruh anggota grup.
-
-Hidden Tag
+Hidden Mention
 
 !hidetag Pengumuman penting
 
-Mengirim pesan kepada seluruh anggota dengan mention yang tidak ditampilkan sebagai daftar nama pada isi pesan.
+Kick Member
 
-Mengeluarkan Anggota
-
-Reply pesan anggota yang ingin dikeluarkan, kemudian gunakan:
+Reply pesan anggota yang ingin dikeluarkan:
 
 !kick
 
-Bot harus memiliki izin administrator grup untuk melakukan tindakan tersebut.
+Bot harus memiliki izin administrator.
 
-Menambahkan Anggota
-
-!add 628123456789
-
-Gunakan format nomor internasional tanpa tanda "+".
-
-Contoh:
+Add Member
 
 !add 628123456789
 
-Keberhasilan penambahan anggota tetap bergantung pada aturan dan kondisi grup WhatsApp.
+Gunakan nomor internasional tanpa tanda "+".
 
 ---
 
 System Commands
 
-Menu
-
-!menu
-
-Menampilkan daftar perintah bot.
-
-Help
-
-!help
-
-Menampilkan bantuan penggunaan fitur.
-
-Ping
-
-!ping
-
-Digunakan untuk melihat waktu respons bot.
-
-Runtime
-
-!runtime
-
-Menampilkan lama waktu bot telah aktif.
-
-Owner
-
-!owner
-
-Menampilkan informasi pemilik atau pengelola bot.
+Command| Description
+"!menu"| Daftar command
+"!help"| Bantuan penggunaan
+"!ping"| Response time
+"!runtime"| Bot uptime
+"!owner"| Informasi owner
 
 ---
 
-Struktur Repository
+Running Again
 
-Struktur utama repository:
+Setelah session berhasil dibuat, pairing tidak perlu dilakukan kembali selama session masih valid.
 
-Bot-WA-Nexus/
-├── handlers/
-├── lib/
-├── public/
-├── session/
-├── temp/
-├── utils/
-├── httpHelper.js
-├── index.js
-├── server.js
-├── spotify.js
-├── spotify.mjs
-├── spotifyScraper.js
-├── youtubeScraper.js
-├── youtube_scraper.py
-├── package.json
-├── package-lock.json
-└── .gitignore
+Android
 
-Repository saat ini memang memiliki struktur modul seperti "handlers", "lib", "public", "session", "temp", dan "utils", serta beberapa file scraper untuk media.
+cd Bot-WA-Nexus
+npm start
+
+Windows
+
+cd Bot-WA-Nexus
+npm start
+
+Pastikan folder "session/" tidak dihapus.
 
 ---
 
-Session
+Reset Session
 
-Folder "session" digunakan untuk menyimpan sesi autentikasi WhatsApp.
+Jika WhatsApp logout atau session mengalami masalah, hapus session kemudian jalankan bot kembali.
 
-Jangan:
-
-- Membagikan folder "session".
-- Mengunggah folder "session" ke repository publik.
-- Memberikan isi file sesi kepada orang lain.
-
-Jika sesi mengalami masalah atau akun telah logout, Anda dapat menghapus folder sesi lalu menjalankan bot kembali:
-
-Android:
+Android
 
 rm -rf session
 npm start
 
-Windows PowerShell:
+Windows PowerShell
 
 Remove-Item -Recurse -Force session
 npm start
 
-Setelah itu proses pairing akan diminta kembali.
+Setelah itu bot akan meminta Pairing Code kembali.
 
 ---
 
-Update Repository
+Update
 
-Jika repository mendapatkan pembaruan, masuk ke folder project kemudian jalankan:
+Masuk ke folder project:
+
+cd Bot-WA-Nexus
+
+Update repository:
 
 git pull
 
-Setelah pembaruan selesai, instal ulang atau perbarui dependensi jika diperlukan:
+Update dependencies:
 
 npm install
 
-Kemudian jalankan:
+Jalankan kembali:
 
 npm start
 
@@ -418,13 +369,13 @@ Troubleshooting
 
 "node: command not found"
 
-Node.js belum terpasang atau belum masuk ke PATH.
-
 Android:
 
 pkg install nodejs
 
-Windows, instal Node.js kemudian buka terminal baru.
+Windows:
+
+Install Node.js kemudian buka terminal baru.
 
 "npm install" gagal
 
@@ -437,56 +388,74 @@ Pastikan koneksi internet stabil.
 
 Bot tidak terhubung
 
-Pastikan:
+Periksa:
 
-- Internet aktif.
-- Nomor WhatsApp masih dapat digunakan.
-- WhatsApp tidak memutuskan perangkat tertaut.
-- Folder "session" masih tersedia.
+- Internet aktif
+- Nomor WhatsApp masih dapat digunakan
+- Perangkat bot masih tertaut
+- Folder "session/" masih tersedia
 
-Jika sesi sudah tidak valid, hapus folder "session" dan lakukan pairing kembali.
+Jika session sudah tidak valid, lakukan reset session.
 
 Bot logout
 
-Jika terminal menampilkan bahwa sesi telah logout, hapus sesi:
+Hapus session:
+
+Android
 
 rm -rf session
-
-Kemudian:
-
 npm start
 
-Pada Windows PowerShell:
+Windows
 
 Remove-Item -Recurse -Force session
 npm start
 
----
-
-Catatan Penggunaan
-
-NEXUS BOT merupakan project otomasi WhatsApp yang menggunakan library Baileys.
-
-Gunakan bot secara bertanggung jawab dan jangan melakukan spam, penyalahgunaan fitur grup, atau aktivitas yang dapat mengganggu pengguna lain.
-
-Fitur yang berhubungan dengan layanan pihak ketiga dapat berubah sewaktu-waktu apabila platform tersebut mengubah sistem, API, struktur halaman, atau kebijakan mereka.
+Kemudian lakukan pairing kembali.
 
 ---
 
-Teknologi
+Project Structure
 
-Project ini menggunakan:
+Bot-WA-Nexus/
+│
+├── handlers/
+├── lib/
+├── public/
+├── session/
+├── temp/
+├── utils/
+│
+├── httpHelper.js
+├── index.js
+├── server.js
+│
+├── spotify.js
+├── spotify.mjs
+├── spotifyScraper.js
+│
+├── youtubeScraper.js
+├── youtube_scraper.py
+│
+├── package.json
+├── package-lock.json
+└── .gitignore
 
-- Node.js
-- JavaScript
-- Baileys
-- Axios
-- Express
-- JSDOM
-- node-fetch
-- Pino
+---
 
-Konfigurasi "package.json" repository mendefinisikan project sebagai CommonJS dan menggunakan "index.js" sebagai entry point.
+Technology
+
+Technology| Usage
+Node.js| Runtime
+JavaScript| Programming language
+Baileys| WhatsApp connection
+Axios| HTTP requests
+Express| Web server
+JSDOM| DOM processing
+node-fetch| HTTP requests
+Pino| Logging
+
+Project menggunakan CommonJS dengan "index.js" sebagai entry point.
 
 ---
 
@@ -500,14 +469,22 @@ https://github.com/dirrzzx948-png/Bot-WA-Nexus
 
 License
 
-Project ini menggunakan lisensi yang tercantum pada repository. Periksa file "package.json" atau repository untuk informasi lisensi terbaru.
+Project menggunakan lisensi yang tercantum pada repository.
+
+Untuk informasi lisensi terbaru, silakan periksa repository atau file terkait di dalam project.
 
 ---
 
 Credits
 
-Developed and maintained by:
+Developed and maintained by
 
 dirrzzx948-png
 
-NEXUS BOT
+---
+
+<div align="center">NEXUS BOT
+
+Node.js × Baileys
+
+</div>
