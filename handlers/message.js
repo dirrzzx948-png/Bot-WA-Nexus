@@ -2,6 +2,7 @@ const { makeSticker, makeTextSticker, stickerToImage, downloadMedia } = require(
 const { tiktokDownload } = require('../lib/tiktok')
 const { scrapeYouTube } = require('../youtubeScraper')
 const { downloadSpotify } = require('../spotifyScraper')
+const { scrapeInstagram, setInstagramSource } = require('../lib/instagram')
 const fs = require('fs')
 
 const OWNER = 'Hoidir'
@@ -94,6 +95,7 @@ async function handleMessage(sock, msg, startTime) {
 
 ┌─ *[ DOWNLOADER ]*
 │ • *!tt <url>* : Unduh Video TikTok
+│ • *!ig <url>* : Unduh Video/Foto IG
 │ • *!yt <url>* : Unduh YouTube (360p)
 │ • *!yt720 <url>* : Unduh YouTube (720p)
 │ • *!yt1080 <url>* : Unduh YouTube (1080p)
@@ -136,6 +138,7 @@ Halo! Bingung cara pakai fiturnya? Berikut panduan lengkapnya:
 
 📥 *PANDUAN DOWNLOADER*
 • *TikTok* : Ketik *!tt https://vt.tiktok.com/xxx*
+• *Instagram* : Ketik *!ig <link_reel/post>* (Bisa tambah parameter server: *!igsnapsave*, *!igsavvid*, *!igindown*)
 • *YouTube* : Ketik *!yt <link>* (360p), *!yt720 <link>*, atau *!ytmp3 <link>* untuk musik.
 • *Spotify* : Ketik *!spotify https://open.spotify.com/track/xxx*
 
@@ -182,6 +185,87 @@ Halo! Bingung cara pakai fiturnya? Berikut panduan lengkapnya:
         caption: captionText,
         mimetype: 'video/mp4'
       })
+      return
+    }
+
+    // ================= INSTAGRAM DOWNLOADER =================
+    if (command === '!ig' || command === '!instagram' || command === '!igsnapsave' || command === '!igsavvid' || command === '!igindown') {
+      let targetUrl = args
+      let customSource = 'snapsave'
+
+      if (command === '!igsnapsave') customSource = 'snapsave'
+      if (command === '!igsavvid') customSource = 'savevid'
+      if (command === '!igindown') customSource = 'indown'
+
+      // Jika argumen kosong tapi ada teks yang di-reply atau command berbentuk gabungan
+      if (!targetUrl && text.includes('http')) {
+        const matchUrl = text.match(/https?:\/\/[^\s]+/);
+        if (matchUrl) targetUrl = matchUrl[0];
+      }
+
+      if (!targetUrl) {
+        await sock.sendMessage(jid, { 
+          text: `*[ PERINTAH GAGAL ]*\nURL Instagram belum diisi.\n\n*Contoh:*\n!ig https://www.instagram.com/reel/xxxx/` 
+        })
+        return
+      }
+
+      const statusMsg = await sendLoadingStatus(sock, jid, '━ [ ▰▱▱▱▱ ] *Menghubungkan ke Instagram...*', [
+        { text: '━ [ ▰▰▰▰▰ ] *Mengambil Data Media...*', delay: 900 }
+      ])
+
+      try {
+        setInstagramSource(customSource)
+        const result = await scrapeInstagram(targetUrl)
+
+        if (!result.status) {
+          await sock.sendMessage(jid, { text: `*[ UNDUHAN GAGAL ]*\n${result.error || 'Gagal mengunduh media Instagram.'}`, edit: statusMsg.key })
+          return
+        }
+
+        const data = result.data
+        const downloads = data.downloads || []
+
+        if (downloads.length === 0) {
+          await sock.sendMessage(jid, { text: '*[ UNDUHAN GAGAL ]*\nTidak ada media ditemukan pada tautan tersebut.', edit: statusMsg.key })
+          return
+        }
+
+        await sock.sendMessage(jid, { text: '━ [ ▰▰▰▰▰ ] *Mengirim Media...*', edit: statusMsg.key })
+
+        const captionText = `━───[ *INSTAGRAM DOWNLOADER* ]───━\n\n*Judul* : ${data.title || 'Instagram Media'}`
+
+        // Kirim file pertama/utama
+        const primaryMedia = downloads[0]
+        if (primaryMedia.type === 'PHOTO' || primaryMedia.url.match(/\.(jpe?g|png|webp)(\?|$)/i)) {
+          await sock.sendMessage(jid, {
+            image: { url: primaryMedia.url },
+            caption: captionText
+          }, { quoted: msg })
+        } else {
+          await sock.sendMessage(jid, {
+            video: { url: primaryMedia.url },
+            caption: captionText,
+            mimetype: 'video/mp4'
+          }, { quoted: msg })
+        }
+
+        // Jika ada lebih dari 1 media (Carousel/Slide)
+        if (downloads.length > 1) {
+          for (let i = 1; i < downloads.length; i++) {
+            const med = downloads[i]
+            if (med.type === 'PHOTO' || med.url.match(/\.(jpe?g|png|webp)(\?|$)/i)) {
+              await sock.sendMessage(jid, { image: { url: med.url } }, { quoted: msg })
+            } else {
+              await sock.sendMessage(jid, { video: { url: med.url }, mimetype: 'video/mp4' }, { quoted: msg })
+            }
+          }
+        }
+
+      } catch (err) {
+        console.log('[ERROR INSTAGRAM]', err)
+        await sock.sendMessage(jid, { text: '*[ ERROR ]* Terjadi kesalahan sistem saat memproses Instagram.', edit: statusMsg.key })
+      }
       return
     }
 
