@@ -1,0 +1,139 @@
+cat << 'EOF' > public/index.html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Nexus Runner 3D</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; touch-action: manipulation; }
+    body { background: #0a0a12; color: #fff; font-family: sans-serif; overflow: hidden; height: 100vh; display: flex; align-items: center; justify-content: center; }
+    #canvas-container { width: 100%; max-width: 480px; height: 100vh; position: relative; background: #000; }
+    #ui { position: absolute; top: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; text-shadow: 0 0 8px #00ffcc; z-index: 10; }
+    #overlay { position: absolute; inset: 0; background: rgba(10, 10, 18, 0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; z-index: 20; text-align: center; padding: 20px; }
+    h1 { font-size: 32px; color: #00ffcc; text-shadow: 0 0 15px #00ffcc; }
+    p { font-size: 14px; color: #aaa; }
+    .btn { padding: 14px 32px; font-size: 18px; font-weight: bold; background: linear-gradient(45deg, #00ffcc, #0099ff); color: #000; border: none; border-radius: 25px; cursor: pointer; }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+  <div id="canvas-container">
+    <div id="ui">
+      <div>SCORE: <span id="score">0</span></div>
+    </div>
+    <div id="overlay">
+      <h1 id="title">NEXUS RUNNER</h1>
+      <p id="desc">Geser Kiri/Kanan untuk hindari rintangan!</p>
+      <button class="btn" id="start-btn" onclick="startGame()">MAIN SEKARANG</button>
+    </div>
+  </div>
+
+  <script>
+    let scene, camera, renderer, player, obstacles = [];
+    let score = 0, isPlaying = false, speed = 0.4, lane = 0;
+    const laneWidth = 1.8;
+
+    function init() {
+      const container = document.getElementById('canvas-container');
+      scene = new THREE.Scene();
+      scene.fog = new THREE.FogExp2(0x0a0a12, 0.03);
+
+      camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 100);
+      camera.position.set(0, 3, 6);
+      camera.rotation.x = -0.3;
+
+      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      container.appendChild(renderer.domElement);
+
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+      scene.add(ambientLight);
+      const dirLight = new THREE.DirectionalLight(0x00ffcc, 1);
+      dirLight.position.set(0, 10, 5);
+      scene.add(dirLight);
+
+      const grid = new THREE.GridHelper(100, 40, 0x00ffcc, 0x222244);
+      grid.position.z = -40;
+      scene.add(grid);
+
+      const geo = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+      const mat = new THREE.MeshStandardMaterial({ color: 0x00ffcc, emissive: 0x004444 });
+      player = new THREE.Mesh(geo, mat);
+      player.position.set(0, 0.4, 0);
+      scene.add(player);
+
+      setupControls();
+      animate();
+    }
+
+    function startGame() {
+      document.getElementById('overlay').style.display = 'none';
+      obstacles.forEach(o => scene.remove(o));
+      obstacles = [];
+      score = 0; speed = 0.4; lane = 0;
+      player.position.x = 0;
+      isPlaying = true;
+    }
+
+    function spawnObstacle() {
+      if (!isPlaying) return;
+      const geo = new THREE.BoxGeometry(1.2, 1.2, 1.2);
+      const mat = new THREE.MeshStandardMaterial({ color: 0xff0055, emissive: 0x440011 });
+      const obs = new THREE.Mesh(geo, mat);
+      const randomLane = Math.floor(Math.random() * 3) - 1;
+      obs.position.set(randomLane * laneWidth, 0.6, -40);
+      scene.add(obs);
+      obstacles.push(obs);
+    }
+
+    function setupControls() {
+      let startX = 0;
+      window.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+      window.addEventListener('touchend', e => {
+        let diff = e.changedTouches[0].clientX - startX;
+        if (diff > 30 && lane < 1) lane++;
+        else if (diff < -30 && lane > -1) lane--;
+      });
+    }
+
+    function gameOver() {
+      isPlaying = false;
+      document.getElementById('title').innerText = "GAME OVER";
+      document.getElementById('desc').innerText = "Skor Kamu: " + score;
+      document.getElementById('start-btn').innerText = "MAIN LAGI";
+      document.getElementById('overlay').style.display = 'flex';
+    }
+
+    let spawnTimer = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+      if (isPlaying) {
+        player.position.x += (lane * laneWidth - player.position.x) * 0.2;
+        spawnTimer++;
+        if (spawnTimer > 35) { spawnObstacle(); spawnTimer = 0; }
+
+        for (let i = obstacles.length - 1; i >= 0; i--) {
+          let obs = obstacles[i];
+          obs.position.z += speed;
+          if (Math.abs(obs.position.z - player.position.z) < 0.8 && Math.abs(obs.position.x - player.position.x) < 0.8) {
+            gameOver();
+          }
+          if (obs.position.z > 5) {
+            scene.remove(obs);
+            obstacles.splice(i, 1);
+            score += 10;
+            speed += 0.002;
+            document.getElementById('score').innerText = score;
+          }
+        }
+      }
+      renderer.render(scene, camera);
+    }
+    window.onload = init;
+  </script>
+</body>
+</html>
+EOF
+
